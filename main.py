@@ -1,68 +1,67 @@
 #!/usr/bin/env python3
-"""THE HARBOUR POST — entry program for news-image-20261123 (akun16).
+"""Runner for THE HARBOUR POST — news-image-20261123, akun16.
 
-The artwork is a single-page newspaper front page for Monday
-23 November 2026: twelve story cards led by the FBI justice-database
-hack probe, a day-in-numbers box, a dotted world map and 27 briefs.
-This program is the deliverable runner: it copies the finished
-entry.png next to it into the output directory, byte for byte.
+THE HARBOUR POST is a harbour-toned front page for Monday
+23 November 2026: white paper, sea-blue ink, coral accents, twelve
+numbered cards (the FBI justice-database probe leads), a numbers
+box, a dotted map and 27 briefs. This runner's only job is to place
+the bundled entry.png into the output folder unchanged.
 
-Standard library only. The copy is guarded by the exact byte count
-and SHA-256 of the artwork, so a swapped or truncated file fails
-loudly instead of submitting the wrong page.
+It is deliberately strict. Before copying, the artwork must match
+the recorded byte count and SHA-256 digest, carry the PNG signature
+and stay under the competition's 1 MiB ceiling. Anything else is a
+hard failure, never a silent copy. Standard library only.
 """
 
 import hashlib
 import os
 import sys
 
-EXPECTED_BYTES = 112811
-EXPECTED_SHA256 = "f460cee81271a957dd3ad42f47b45f812aa0375662da295dd1259a71475cc175"
-PNG_HEADER = b"\x89PNG\r\n\x1a\n"
-HARD_LIMIT = 1048576  # the competition caps artwork at 1 MiB
+ART_BYTES = 112811
+ART_SHA256 = "f460cee81271a957dd3ad42f47b45f812aa0375662da295dd1259a71475cc175"
+PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
+SIZE_CAP = 1048576
 
 
-def read_artwork(path):
-    # Read in one pass; the artwork is small (about 110 KB) and the
-    # guards below need the complete byte string anyway.
-    with open(path, "rb") as handle:
-        return handle.read()
+def load_artwork():
+    here = os.path.dirname(os.path.abspath(__file__))
+    with open(os.path.join(here, "entry.png"), "rb") as stream:
+        return stream.read()
 
 
-def check_artwork(data):
-    if not data:
-        raise SystemExit("entry.png is empty")
-    if data[:8] != PNG_HEADER:
-        raise SystemExit("entry.png does not start with the PNG magic bytes")
-    if len(data) > HARD_LIMIT:
-        raise SystemExit("entry.png is over the 1 MiB cap: %d bytes" % len(data))
-    if len(data) != EXPECTED_BYTES:
-        raise SystemExit(
-            "entry.png size drifted: got %d bytes, expected %d"
-            % (len(data), EXPECTED_BYTES)
+def verify(data):
+    # Collect every problem before failing, so one bad run reports
+    # the full picture instead of only the first mismatch.
+    problems = []
+    if len(data) == 0:
+        problems.append("entry.png is empty")
+    if data[:8] != PNG_SIGNATURE:
+        problems.append("entry.png lacks the PNG signature")
+    if len(data) > SIZE_CAP:
+        problems.append("entry.png exceeds 1 MiB (%d bytes)" % len(data))
+    if len(data) != ART_BYTES:
+        problems.append(
+            "entry.png has %d bytes, expected %d" % (len(data), ART_BYTES)
         )
-    digest = hashlib.sha256(data).hexdigest()
-    if digest != EXPECTED_SHA256:
-        raise SystemExit("entry.png sha256 mismatch: %s" % digest)
-    return digest
+    if hashlib.sha256(data).hexdigest() != ART_SHA256:
+        problems.append("entry.png sha256 does not match the recorded digest")
+    if problems:
+        raise SystemExit("; ".join(problems))
 
 
 def main():
-    folder = os.path.dirname(os.path.abspath(__file__))
-    source = os.path.join(folder, "entry.png")
-    target_dir = os.environ.get("MAKEFUN_OUTPUT_DIR") or "/output"
-    target = os.path.join(target_dir, "entry.png")
+    data = load_artwork()
+    verify(data)
 
-    payload = read_artwork(source)
-    digest = check_artwork(payload)
-
-    os.makedirs(target_dir, exist_ok=True)
-    with open(target, "wb") as handle:
-        handle.write(payload)
+    out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR") or "/output"
+    os.makedirs(out_dir, exist_ok=True)
+    destination = os.path.join(out_dir, "entry.png")
+    with open(destination, "wb") as stream:
+        stream.write(data)
 
     sys.stderr.write(
-        "THE HARBOUR POST entry.png copied: %d bytes sha256=%s\n"
-        % (len(payload), digest)
+        "harbour-post entry.png -> %s (%d bytes, sha256 %s)\n"
+        % (destination, len(data), ART_SHA256)
     )
 
 
