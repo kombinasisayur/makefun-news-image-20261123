@@ -11,7 +11,7 @@
   "Russian Ship Still…" kepotong), rel kiri memakan lebar, grid lebih padat
   dan lebih sulit dibaca.
 - **Pemenang: A** — keterbacaan @300px lebih baik, kepadatan lebih lapang,
-  tidak ada judul terpotong selain elipsis wajar, ukuran 112.811 B.
+  tidak ada judul terpotong selain elipsis wajar, ukuran 112.727 B.
 
 ## Trio lead A
 1. #46 FBI selidiki dugaan peretasan basis data peradilan pidana (lead akun)
@@ -21,7 +21,7 @@
 ## Duel vs ENTRY G3 BERDIRI (Gerbang Tembak Pengganti)
 G3: THE SEVEN SEAS POST · 269.943 B · sub 01a20b5d-dfde-7193-a1c2-db38546910e3
 · lead #15 Pawai Lisbon · sha 6ca44729…
-G4: THE HARBOUR POST · 112.811 B · lead #46 FBI (rotasi lead, beda total)
+G4: THE HARBOUR POST · 112.727 B · lead #46 FBI (rotasi lead, beda total)
 
 | Aspek | G3 | G4 | Unggul |
 |---|---|---|---|
@@ -29,7 +29,7 @@ G4: THE HARBOUR POST · 112.811 B · lead #46 FBI (rotasi lead, beda total)
 | Judul kartu | — | lead 30px · mini 28px | G4 |
 | Chip status | ada | 12/12 (OFFICIAL/REPORTED/CLAIM/ON RECORD/ONGOING/CONFIRMED) | G4 |
 | Kotak angka | ada | 6 angka, 6/6 mengikat kartu/brief | G4 |
-| Ukuran file | 269.943 B | 112.811 B | G4 (seri → kecil menang) |
+| Ukuran file | 269.943 B | 112.727 B | G4 (seri → kecil menang) |
 | Pembingkaian klaim | — | #3 "IRGC Claims…" CLAIM; #6 "…, Zelenskiy Says" ON RECORD; #7 "still burns" bukan "sunk" | G4 |
 | Deck per kartu | — | 100% ≥2 fakta spesifik (margin checker) | G4 |
 | Margin checker | 13/13 | 13/13 | setara |

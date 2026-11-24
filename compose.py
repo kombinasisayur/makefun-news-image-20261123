@@ -456,9 +456,9 @@ def footer_block(d, y):
     bf = fb(11)
     d.text((14, y), "HOW SURE:", font=bf, fill=INK)
     x = 14 + d.textlength("HOW SURE: ", font=bf)
-    txt = ("REPORTED = carried by a named wire or broadcaster · CLAIM = one "
-           "side's account, labelled as such · ONGOING = still developing · "
-           "OFFICIAL / ON RECORD = said by the body or person named.")
+    txt = ("REPORTED = named wire or broadcaster · CLAIM = one side's account, "
+           "labelled · ONGOING = still developing · OFFICIAL / ON RECORD = "
+           "said by the body or person named.")
     for ln in fit_lines(d, txt, f, W - 14 - x, 1):
         d.text((x, y), ln, font=f, fill=(40, 40, 40))
     d.text((14, y + 13),
